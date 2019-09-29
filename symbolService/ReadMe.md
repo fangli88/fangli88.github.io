@@ -1,6 +1,6 @@
 ## Dictionary symbol stlyes definition
 Dictionary symbol styles are composed of two major parts:
-(1) Dictionary Info
+(1) Dictionary info
 (2) Individual symbols and texts
 
 Dictionary Info lives in the path `/resources/styles/dictionary-info.json` relatively to the dictionary url defined in the Dictionary Renderer. See comments below for detailed explanation.
@@ -104,8 +104,8 @@ return keys;
 ```
 
 
-Symbol and Text are [CIM symbols](https://github.com/Esri/cim-spec/blob/master/docs/v2/Overview-Symbols.md)
-Symbol
+Symbol and text are [CIM symbols](https://github.com/Esri/cim-spec/blob/master/docs/v2/Overview-Symbols.md).
+Text can be considered as a special type of symbol that will use the corresponding feature attribute as text string. 
 ```
 {
   "type": "CIMPointSymbol",
@@ -266,7 +266,7 @@ const = renderer = new DictionaryRenderer({
 "Fuel_ELEC;Con_CHADEMO|po:CHADEMO|OffsetX|24|OffsetY|8;Label"
 ```
 
-Based on the kyes, the symbol will have three components: `Fuel_ELEC`, `Con_CHADEMO` and `Label`.
+Based on the keys, the symbol will have three components: `Fuel_ELEC`, `Con_CHADEMO` and `Label`.
 The corresponding styles for the components are:
 * `Fuel_ELEC` : https://github.com/fangli88/fangli88.github.io/blob/master/symbolService/alternative-fuel-stations/resources/styles/cim/Fuel_ELEC.json
 * `Con_CHADEMO` : https://github.com/fangli88/fangli88.github.io/blob/master/symbolService/alternative-fuel-stations/resources/styles/cim/Con_CHADEMO.json
