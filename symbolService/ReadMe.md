@@ -3,7 +3,7 @@ Dictionary symbol styles are composed of two major parts:
 (1) Dictionary Info
 (2) Individual symbols and texts
 
-Dictionary Info live in the path `/resources/styles/dictionary-info.json` relatively to the dictionary url defined in the Dictionary Renderer.
+Dictionary Info lives in the path `/resources/styles/dictionary-info.json` relatively to the dictionary url defined in the Dictionary Renderer. See comments below for detailed explanation.
 ```
 {
     "cimRefTemplateUrl": "./resources/styles/cim/{itemName}.json", //This line tells dictionary render where to find each symbol item.
@@ -104,7 +104,7 @@ return keys;
 ```
 
 
-Symbol and Text are CIM symbols
+Symbol and Text are [CIM symbols](https://github.com/Esri/cim-spec/blob/master/docs/v2/Overview-Symbols.md)
 Symbol
 ```
 {
@@ -234,4 +234,75 @@ Text
 ```
 
 
-Example
+Example:
+Feature attributes:
+```
+const attributes = {
+    ObjectID: 1,
+    Fuel_Type_Code: "ELEC",
+    EV_Connector_Types: "CHADEMO",
+    Station_Name: "Walmart"
+}
+```
+
+Dictionary Renderer defined on the feature layer:
+```
+const = renderer = new DictionaryRenderer({
+            url: "./alternative-fuel-stations",
+            fieldMap: {
+              fuel_type: "Fuel_Type_Code",
+              connector_types: "EV_Connector_Types",
+              network: "EV_Network",
+              name: "Station_Name"
+            },
+            config: {
+              show_label: "true"
+            }
+          })
+```
+
+`key` returned from Arcade expression:
+```
+"Fuel_ELEC;Con_CHADEMO|po:CHADEMO|OffsetX|24|OffsetY|8;Label"
+```
+
+Based on the kyes, the symbol will have three components: `Fuel_ELEC`, `Con_CHADEMO` and `Label`.
+The corresponding styles for the components are:
+* `Fuel_ELEC` : https://github.com/fangli88/fangli88.github.io/blob/master/symbolService/alternative-fuel-stations/resources/styles/cim/Fuel_ELEC.json
+* `Con_CHADEMO` : https://github.com/fangli88/fangli88.github.io/blob/master/symbolService/alternative-fuel-stations/resources/styles/cim/Con_CHADEMO.json
+* `Label` : https://github.com/fangli88/fangli88.github.io/blob/master/symbolService/alternative-fuel-stations/resources/styles/cim/Label.json
+
+The final CIMSymbol will be:
+```
+{
+  "type": "CIMSymbolReference",
+  "symbol": {
+    "type": "CIMPointSymbol",
+    "symbolLayers": [
+      {[Label]},
+      {[Fuel_ELEC],
+      {[Con_CHADEMO]}
+    ],
+    "haloSize": 1,
+    "scaleX": 1,
+    "angleAlignment": "Display",
+    "version": "2.0.0",
+    "build": "8933"
+  },
+  "primitiveOverrides": [
+    {
+      "primitiveName": "CHADEMO",
+      "propertyName": "OffsetX",
+      "value": 24
+    },
+    {
+      "primitiveName": "CHADEMO",
+      "propertyName": "OffsetY",
+      "value": 8
+    }
+  ]
+}
+```
+
+Result symbol when renderer on the map:
+[!CIMExpample](./CIMExample.png)
