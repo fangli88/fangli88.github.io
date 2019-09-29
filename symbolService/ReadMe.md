@@ -1,10 +1,13 @@
 ## Dictionary symbol stlyes definition
+Dictionary symbol styles are composed of two major parts:
+(1) Dictionary Info
+(2) Individual symbols and texts
 
-/resources/styles/dictionary-info.json
+Dictionary Info live in the path `/resources/styles/dictionary-info.json` relatively to the dictionary url defined in the Dictionary Renderer.
 ```
 {
     "cimRefTemplateUrl": "./resources/styles/cim/{itemName}.json", //This line tells dictionary render where to find each symbol item.
-    "itemsNames": [
+    "itemsNames": [ //used in conjunction with the url above to attrieve individual symbol and text
           "Fuel_BD",
           "Fuel_CNG",
           "Fuel_ELEC",
@@ -37,7 +40,7 @@
           "EV Connect"
      ],
      "authoringInfo": {
-          "configuration": [
+          "configuration": [ //property definition of configuration used in DictionaryRenderer.config.
                   {
                       "name": "show_label",
                       "value": "true",
@@ -48,21 +51,25 @@
                       "info": "indicates if the label should show"
                   }
             ],
-      "symbol": [
+      "symbol": [ //will be mapped to actual feature fields in DictionaryRenderer.fieldMap
                     "fuel_type",
                     "connector_types",
                     "network"
                 ],
-      "text": [
+      "text": [   //will be mapped to actual feature fields in DictionaryRenderer.fieldMap
                   "name"
              ]
       },
+      //Arcade script that defines the rules to generate symbols by Dictionary Renderer(see the parsed version in the section below)
       "expression": "\n// fuel type\nvar keys = 'Fuel_' + $feature.fuel_type;\n\n// network logo\nif (count($feature.network) > 0) {\n  keys += ';';\n  keys += $feature.network;\n  keys += ';po:network|OffsetX|-18';\n  keys += ';po:network|OffsetY|8';\n}\n\n// connectors\nif (count($feature.connector_types) > 0) {\nvar offset = 24;\n  var types = split($feature.connector_types, ' ');\n  for (var t in types) {\n    keys += ';Con_';\n    keys += types[t];\n    keys += ';po:' + types[t] + '|OffsetX|' + offset;\n    keys += ';po:' + types[t] + '|OffsetY|8';\n    offset += 18;\n  }\n}\n\n// labels\nif ($config.show_label == 'true') {\n  keys += ';Label';\n}\n\nreturn keys;"
 }
 ```
 
 
-Expression(Arcade Script):
+Expression(Arcade Script)
+`$feature.fuel_type` represents the value of the feature attribute of the mapped field of `fuel_type` symbol.
+`;po:network|OffsetX|-18` Add primitive override to the returned symbol. Primitive override name will be network. It will override the `OffsetX` value of the symbol(or text). The overriden value is -18.
+`$config.show_label` Get config infortation set on the dictionary renderer.
 ```
 // fuel type
 var keys = 'Fuel_' + $feature.fuel_type;
@@ -96,6 +103,8 @@ if ($config.show_label == 'true') {
 return keys;
 ```
 
+
+Symbol and Text are CIM symbols
 Symbol
 ```
 {
@@ -223,3 +232,6 @@ Text
   "build": "8933"
 }
 ```
+
+
+Example
