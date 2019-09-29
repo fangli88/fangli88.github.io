@@ -234,7 +234,7 @@ Text
 ```
 
 
-Example:
+### Example:
 Feature attributes:
 ```
 const attributes = {
