@@ -305,4 +305,5 @@ The final CIMSymbol will be:
 ```
 
 Result symbol when renderer on the map:
-[!CIMExpample](./CIMExample.png)
+
+![CIMExpample](./CIMExample.png)
