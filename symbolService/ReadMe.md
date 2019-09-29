@@ -60,3 +60,166 @@
       "expression": "\n// fuel type\nvar keys = 'Fuel_' + $feature.fuel_type;\n\n// network logo\nif (count($feature.network) > 0) {\n  keys += ';';\n  keys += $feature.network;\n  keys += ';po:network|OffsetX|-18';\n  keys += ';po:network|OffsetY|8';\n}\n\n// connectors\nif (count($feature.connector_types) > 0) {\nvar offset = 24;\n  var types = split($feature.connector_types, ' ');\n  for (var t in types) {\n    keys += ';Con_';\n    keys += types[t];\n    keys += ';po:' + types[t] + '|OffsetX|' + offset;\n    keys += ';po:' + types[t] + '|OffsetY|8';\n    offset += 18;\n  }\n}\n\n// labels\nif ($config.show_label == 'true') {\n  keys += ';Label';\n}\n\nreturn keys;"
 }
 ```
+
+
+Expression(Arcade Script):
+```
+// fuel type
+var keys = 'Fuel_' + $feature.fuel_type;
+
+// network logo
+if (count($feature.network) > 0) {
+  keys += ';';
+  keys += $feature.network;
+  keys += ';po:network|OffsetX|-18';
+  keys += ';po:network|OffsetY|8';
+}
+
+// connectors
+if (count($feature.connector_types) > 0) {
+var offset = 24;
+  var types = split($feature.connector_types, ' ');
+  for (var t in types) {
+    keys += ';Con_';
+    keys += types[t];
+    keys += ';po:' + types[t] + '|OffsetX|' + offset;
+    keys += ';po:' + types[t] + '|OffsetY|8';
+    offset += 18;
+  }
+}
+
+// labels
+if ($config.show_label == 'true') {
+  keys += ';Label';
+}
+
+return keys;
+```
+
+Symbol
+```
+{
+  "type": "CIMPointSymbol",
+  "symbolLayers": [
+    {
+      "type": "CIMPictureMarker",
+      "enable": true,
+      "anchorPointUnits": "Relative",
+      "dominantSizeAxis3D": "Y",
+      "size": 32,
+      "billboardMode3D": "FaceNearPlane",
+      "invertBackfaceTexture": true,
+      "scaleX": 1,
+      "textureFilter": "Picture",
+      "tintColor": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "url": "..." //url to the picture resource
+    }
+  ],
+  "haloSize": 1,
+  "scaleX": 1,
+  "angleAlignment": "Display",
+  "version": "2.0.0",
+  "build": "8933"
+}
+```
+
+Text
+```
+{
+  "type": "CIMPointSymbol",
+  "symbolLayers": [
+    {
+      "type": "CIMVectorMarker",
+      "enable": true,
+      "anchorPointUnits": "Relative",
+      "dominantSizeAxis3D": "Y",
+      "size": 10,
+      "billboardMode3D": "FaceNearPlane",
+      "frame": {
+        "xmin": -5,
+        "ymin": -5,
+        "xmax": 5,
+        "ymax": 5
+      },
+      "markerGraphics": [
+        {
+          "type": "CIMMarkerGraphic",
+          "geometry": {
+            "x": 0,
+            "y": 0
+          },
+          "symbol": {
+            "type": "CIMTextSymbol",
+            "blockProgression": "TTB",
+            "depth3D": 1,
+            "extrapolateBaselines": true,
+            "fontEffects": "Normal",
+            "fontEncoding": "Unicode",
+            "fontFamilyName": "Arial",
+            "fontStyleName": "Regular",
+            "fontType": "Unspecified",
+            "haloSize": 1,
+            "haloSymbol": {
+              "type": "CIMPolygonSymbol",
+              "symbolLayers": [
+                {
+                  "type": "CIMSolidFill",
+                  "enable": true,
+                  "color": [
+                    255,
+                    255,
+                    255,
+                    255
+                  ]
+                }
+              ]
+            },
+            "height": 10,
+            "hinting": "Default",
+            "horizontalAlignment": "Center",
+            "kerning": true,
+            "letterWidth": 100,
+            "ligatures": true,
+            "lineGapType": "ExtraLeading",
+            "offsetY": 18,
+            "symbol": {
+              "type": "CIMPolygonSymbol",
+              "symbolLayers": [
+                {
+                  "type": "CIMSolidFill",
+                  "enable": true,
+                  "color": [
+                    0,
+                    0,
+                    0,
+                    255
+                  ]
+                }
+              ]
+            },
+            "textCase": "Normal",
+            "textDirection": "LTR",
+            "verticalAlignment": "Bottom",
+            "verticalGlyphOrientation": "Right",
+            "wordSpacing": 100,
+            "billboardMode3D": "FaceNearPlane"
+          },
+          "textString": "[name]"
+        }
+      ],
+      "scaleSymbolsProportionally": true,
+      "respectFrame": true
+    }
+  ],
+  "haloSize": 1,
+  "scaleX": 1,
+  "angleAlignment": "Display",
+  "version": "2.0.0",
+  "build": "8933"
+}
+```
