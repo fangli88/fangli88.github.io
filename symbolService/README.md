@@ -1,5 +1,5 @@
-## Dictionary symbol stlyes definition
-Dictionary symbol styles are composed of two major parts:
+## Dictionary styles
+Dictionary styles are composed of two major parts:
 (1) Dictionary info
 (2) Individual symbols and texts
 
@@ -307,3 +307,5 @@ The final CIMSymbol will be:
 Result symbol when renderer on the map:
 
 ![CIMExpample](./CIMExample.png)
+
+**Note:** This is currently not compatible with Pro 2.4 [dictionary symbology](https://github.com/Esri/dictionary-renderer-toolkit). It will be supported in a future release of ArcGIS Pro.
