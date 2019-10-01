@@ -7,7 +7,7 @@ Dictionary Info lives in the path `/resources/styles/dictionary-info.json` relat
 ```
 {
     "cimRefTemplateUrl": "./resources/styles/cim/{itemName}.json", //This line tells dictionary render where to find each symbol item.
-    "itemsNames": [ //used in conjunction with the url above to attrieve individual symbol and text
+    "itemsNames": [ //used in conjunction with the url above to retrieve individual symbol and text
           "Fuel_BD",
           "Fuel_CNG",
           "Fuel_ELEC",
