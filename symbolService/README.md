@@ -308,4 +308,6 @@ Result symbol when renderer on the map:
 
 ![CIMExpample](./CIMExample.png)
 
-**Note:** This is currently not compatible with Pro 2.4 [dictionary symbology](https://github.com/Esri/dictionary-renderer-toolkit). It will be supported in a future release of ArcGIS Pro.
+Example app using the dictionary symbology service hosted here on github: https://codepen.io/fangli88/pen/poJZbqw
+
+**Note:** As of Pro 2.5, you can author and publish a dictionary symbol service from ArcGIS Pro using the [dictionary renderer toolkit](https://github.com/Esri/dictionary-renderer-toolkit).
