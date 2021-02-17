@@ -1,0 +1,141 @@
+{
+  "uiFields": [
+    { "name": "Fuel Type", "domain": "$domains.fuel_type", "key": "fuel_type" },
+    { "name": "Network", "domain": "$domains.network", "key": "network" },
+    { "name": "CHADEMO connect", "domain": "$domains.True_False", "key": "CHADEMO" },
+    { "name": "J1772 Connector", "domain": "$domains.True_False", "key": "J1772" },
+    { "name": "NEMA 15 Connector", "domain": "$domains.True_False", "key": "NEMA515" },
+    { "name": "NEMA 20 Connector", "domain": "$domains.True_False", "key": "NEMA520" },
+    { "name": "NEMA 50 Connector", "domain": "$domains.True_False", "key": "NEMA1450" },
+    { "name": "SAE Combo Connector", "domain": "$domains.True_False", "key": "J1772COMBO" },
+    { "name": "Tesla Connector", "domain": "$domains.True_False", "key": "Tesla" },
+    { "name": "Station Name", "type": "text", "key": "name" }
+  ],
+  "domains": {
+    "fuel_type": {
+      "type": "coded-value",
+      "name": "fuel_type",
+      "codedValues": [
+        {
+          "name": "Bio Diesel",
+          "code": "BD"
+        },
+        {
+          "name": "CNG",
+          "code": "CNG"
+        },
+        {
+          "name": "Electric",
+          "code": "ELEC"
+        },
+        {
+          "name": "Ethanol",
+          "code": "E85"
+        },
+        {
+          "name": "Hydrogen",
+          "code": "HY"
+        },
+        {
+          "name": "Liquid Natural Gas",
+          "code": "LNG"
+        },
+        {
+          "name": "Propane",
+          "code": "LPG"
+        }
+      ]
+    },
+    "network": {
+      "type": "coded-value",
+      "name": "network",
+      "codedValues": [
+        {
+          "type": "coded-value",
+          "name": "Aerovironment",
+          "code": "Aerovironment Network"
+        },
+        {
+          "type": "coded-value",
+          "name": "Blink",
+          "code": "Blink Network"
+        },
+        {
+          "type": "coded-value",
+          "name": "ChargePoint",
+          "code": "ChargePoint Network"
+        },
+        {
+          "type": "coded-value",
+          "name": "Electric Circuit",
+          "code": "Electric Circuit"
+        },
+        {
+          "type": "coded-value",
+          "name": "FLO",
+          "code": "FLO"
+        },
+        {
+          "type": "coded-value",
+          "name": "GE",
+          "code": "GE WattStation"
+        },
+        {
+          "type": "coded-value",
+          "name": "Greenlots",
+          "code": "Greenlots"
+        },
+        {
+          "type": "coded-value",
+          "name": "NRG",
+          "code": "NRG"
+        },
+        {
+          "type": "coded-value",
+          "name": "OpConnect",
+          "code": "OpConnect"
+        },
+        {
+          "type": "coded-value",
+          "name": "SemaConnect",
+          "code": "SemaCharge Network"
+        },
+        {
+          "type": "coded-value",
+          "name": "Sun County",
+          "code": "Electric_1"
+        },
+        {
+          "type": "coded-value",
+          "name": "Tesla",
+          "code": "Tesla"
+        },
+        {
+          "type": "coded-value",
+          "name": "Volta",
+          "code": "Volta"
+        }
+      ]
+    },
+    "True_False": {
+      "type": "coded-value",
+      "name": "true_false",
+      "codedValues": [
+        {
+          "type": "coded-value",
+          "name": "False",
+          "code": "0"
+        },
+        {
+          "type": "coded-value",
+          "name": "True",
+          "code": "1"
+        }
+      ]
+    }
+  },
+  "symbolValueFromUIFields": {
+    "connector_types": "var result = ''; if(!isEmpty($feature.CHADEMO) && $feature.CHADEMO =='1'){result +='CHADEMO ';} if(!isEmpty($feature.J1772) && $feature.J1772 == '1'){result +='J1772 ';} if(!isEmpty($feature.NEMA515) && $feature.NEMA515 == '1'){result +='NEMA515 ';} if(!isEmpty($feature.NEMA520) && $feature.NEMA520 == '1'){result +='NEMA520 ';} if(!isEmpty($feature.NEMA1450) && $feature.NEMA1450 == '1'){result +='NEMA1450 ';} if(!isEmpty($feature.J1772COMBO) && $feature.J1772COMBO == '1'){result +='J1772COMBO ';} if(!isEmpty($feature.Tesla) && $feature.Tesla == '1'){result +='TESLA ';} return result;"
+  },
+  "uiFieldsFromSymbolValues": "var ct = $feature.connector_types; if (count(ct) > 0) { var types = split(ct, ' '); var result = {}; for (var t in types) { result[types[t]] = '1'; } } return result;"
+}

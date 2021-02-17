@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Custom Icons Tutorial - Leaflet</title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin=""
+    />
+    <script
+      src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+      integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+      crossorigin=""
+    ></script>
+    <script type="module" src="../custom-element-arcgis-jsapi/build/dictionarysymbolbrowser.esm.js"></script>
+    <script nomodule="" src="../custom-element-arcgis-jsapi/build/dictionarysymbolbrowser.js"></script>
+    <style>
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+      }
+      #container {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+      }
+      #map {
+        height: 100%;
+        flex: 1;
+      }
+      #dsb {
+        width: 400px;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <div id="map"></div>
+      <dictionary-symbol-browser
+        id="dsb"
+        styleurl="https://www.arcgis.com/sharing/rest/content/items/7842f07fabbf48a4b768fc5aa66dc5b7"
+        uiurl="../data/mil2525bc2-ui-with-groups-texts.json"
+      ></dictionary-symbol-browser>
+    </div>
+
+    <script>
+      const map = L.map('map').setView([51.5, -0.09], 13);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(map);
+
+      let currentPreview = null;
+      let dsbNode = document.getElementById('dsb');
+      dsbNode.addEventListener('symbolChanged', e => {
+        currentPreview = e.detail.previewImg;
+      });
+
+      map.on('click', e => {
+        const icon = L.icon({
+          iconUrl: currentPreview.src,
+          iconSize: [currentPreview.width * 2, currentPreview.height * 2],
+          iconAnchor: [currentPreview.width, currentPreview.height],
+        });
+        L.marker([e.latlng.lat, e.latlng.lng], { icon: icon }).addTo(map);
+      });
+    </script>
+  </body>
+</html>

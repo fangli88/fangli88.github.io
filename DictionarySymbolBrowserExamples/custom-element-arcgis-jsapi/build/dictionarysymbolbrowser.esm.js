@@ -1,0 +1,1 @@
+import{p as s,b as t}from"./p-476cf7c4.js";(()=>{const t=import.meta.url,r={};return""!==t&&(r.resourcesUrl=new URL(".",t).href),s(r)})().then((s=>t([["p-524641b6",[[1,"dictionary-symbol-browser",{styleurl:[1],uiurl:[1],symbolAttributes:[16],_groupExpandStatus:[32],_suggestionList:[32],symbolObject:[32]}]]]],s)));

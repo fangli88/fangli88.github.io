@@ -1,0 +1,1 @@
+const t=1e-6,e=Math.random,n=Math.PI/180,a=180/Math.PI;function o(t){return t*n}Object.freeze({__proto__:null,EPSILON:1e-6,RANDOM:e,toRadian:o,toDegree:function(t){return t*a},equals:function(t,e){return Math.abs(t-e)<=1e-6*Math.max(1,Math.abs(t),Math.abs(e))}});export{t as a,o as r,e as t}

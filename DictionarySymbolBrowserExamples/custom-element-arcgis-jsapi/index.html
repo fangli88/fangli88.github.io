@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Stencil Starter App</title>
+    <meta name="Description" content="Welcome to the Stencil App Starter. You can use this starter to build entire apps all with web components using Stencil!" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+    <meta name="theme-color" content="#16161d" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta http-equiv="x-ua-compatible" content="IE=Edge" />
+    <script type="module" src="./build/dictionarysymbolbrowser.esm.js"></script>
+    <script nomodule="" src="./build/dictionarysymbolbrowser.js"></script>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.18/esri/themes/light/main.css" />
+    <script src="https://js.arcgis.com/4.18/"></script>
+    <style>
+      html,
+      body,
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+      #dsb {
+        background-color: white;
+        overflow: hidden;
+        min-width: 330px;
+        height: 85vh;
+      }
+      #buttons {
+        display: flex;
+      }
+      #done {
+        display: none;
+      }
+    </style>
+    <script>
+      require(['esri/Map', 'esri/views/MapView', 'esri/layers/FeatureLayer', 'esri/renderers/DictionaryRenderer', 'esri/Graphic'], function (
+        Map,
+        MapView,
+        FeatureLayer,
+        DictionaryRenderer,
+        Graphic,
+      ) {
+        const map = new Map({
+          basemap: 'hybrid',
+        });
+
+        const view = new MapView({
+          center: [-80, 35],
+          container: 'viewDiv',
+          map: map,
+          zoom: 3,
+        });
+
+        const featureLayer = new FeatureLayer({
+          source: [
+            new Graphic({
+              geometry: {
+                type: 'point',
+                x: -13633296.119848348,
+                y: 4551401.482251689,
+                spatialReference: {
+                  wkid: 102100,
+                  latestWkid: 3857,
+                },
+              },
+              attributes: {
+                sidc: 'SFGPU----------',
+              },
+            }),
+          ],
+          geometryType: 'point',
+          fields: [
+            {
+              alias: 'HAS_NO_ALIAS',
+              editable: true,
+              length: -1,
+              name: 'ObjectID',
+              nullable: true,
+              type: 'oid',
+            },
+            {
+              alias: 'HAS_NO_ALIAS',
+              editable: true,
+              length: -1,
+              name: 'sidc',
+              nullable: true,
+              type: 'string',
+            },
+          ],
+          objectIdField: 'ObjectID',
+          renderer: {
+            type: 'dictionary',
+            url: 'https://www.arcgis.com/sharing/rest/content/items/7842f07fabbf48a4b768fc5aa66dc5b7',
+            fieldMap: {
+              sidc: 'sidc', //"Full_SIDC_2525C",
+            },
+            config: {
+              frame: 'ON',
+              fill: 'ON',
+              icon: 'ON',
+              text: 'ON',
+              colors: 'MEDIUM',
+              condition: 'PRIMARY', // "PRIMARY" - "ALTERNATE"
+            },
+          },
+          spatialReference: {
+            wkid: 102100,
+          },
+          minScale: 0,
+          maxScale: 0,
+        });
+
+        view.map.add(featureLayer);
+
+       
+        const addToMapBtn = document.getElementById('addToMap');
+        const doneBtn = document.getElementById('done');
+        
+        let currentAttributes = null;
+        let dsbNode = document.getElementById('dsb');
+        dsbNode.addEventListener('symbolChanged', e => {
+          currentAttributes = e.detail.attributes;
+        });
+
+        let editFeature, highlight;
+        view.on('click', function (event) {
+          // Listen for when the user clicks on the view
+          view.hitTest(event).then(function (response) {
+            // If user selects a feature, select it
+            const results = response.results;
+            if (results.length > 0 && results[0].graphic && results[0].graphic.layer === featureLayer) {
+              const objectId = results[0].graphic.attributes[featureLayer.objectIdField];
+              featureLayer
+                .queryFeatures({
+                  objectIds: [objectId],
+                  outFields: ['*'],
+                  returnGeometry: true,
+                })
+                .then(function (results) {
+                  if (results.features.length > 0) {
+                    editFeature = results.features[0];
+
+                    dsbNode.symbolAttributes = {
+                      sidc: editFeature.attributes.sidc,
+                    };
+
+                    doneBtn.style.display = 'block';
+                    // highlight the feature on the view
+                    view.whenLayerView(editFeature.layer).then(function (layerView) {
+                      highlight = layerView.highlight(editFeature);
+                    });
+                    addToMapBtn.innerText = 'Cancel';
+                  }
+                });
+            }
+          });
+        });
+
+        let handler = null;
+        
+        addToMapBtn.addEventListener('click', () => {
+          if (addToMapBtn.innerText === 'Add New Feature') {
+            handler = view.on('click', function (event) {
+              if (currentAttributes) {
+                featureLayer.applyEdits({
+                  addFeatures: [
+                    new Graphic({
+                      geometry: event.mapPoint,
+                      attributes: {
+                        sidc: currentAttributes.sidc,
+                      },
+                    }),
+                  ],
+                });
+              }
+              handler.remove();
+              handler = null;
+              addToMapBtn.innerText = 'Add New Feature';
+            });
+            addToMapBtn.innerText = 'Cancel';
+          } else {
+            if (handler) {
+              handler.remove();
+              handler = null;
+            }
+            if (editFeature) {
+              editFeature = null;
+              if (highlight) {
+                highlight.remove();
+              }
+            }
+            doneBtn.style.display = 'none';
+            addToMapBtn.innerText = 'Add New Feature';
+          }
+        });
+        doneBtn.addEventListener('click', () => {
+          if (currentAttributes && editFeature) {
+            featureLayer.applyEdits({
+              updateFeatures: [
+                new Graphic({
+                  geometry: editFeature.geometry,
+                  attributes: {
+                    ...editFeature.attributes,
+                    sidc: currentAttributes.sidc,
+                  },
+                }),
+              ],
+            });
+          }
+          if (editFeature) {
+            editFeature = null;
+            if (highlight) {
+              highlight.remove();
+            }
+          }
+          doneBtn.style.display = 'none';
+          addToMapBtn.innerText = 'Add New Feature';
+        });
+
+        view.ui.add('buttons', 'top-right');
+        view.ui.add('dsb', 'top-right');
+      });
+    </script>
+  </head>
+  <body>
+    <div id="viewDiv"></div>
+    <div id="buttons"><button id="addToMap">Add New Feature</button><button id="done">Done</button></div>
+
+    <dictionary-symbol-browser
+      id="dsb"
+      styleurl="https://www.arcgis.com/sharing/rest/content/items/7842f07fabbf48a4b768fc5aa66dc5b7"
+      uiurl="../data/mil2525bc2-ui-with-groups-texts.json"
+    ></dictionary-symbol-browser>
+  </body>
+</html>
