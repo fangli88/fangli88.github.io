@@ -1,0 +1,1 @@
+import{dL as o,be as r}from"./p-ab028778.js";function t(t,n){const s=n||t.extent,a=t.width,e=r(s&&s.spatialReference);return s&&a?s.width/a*e*o*96:0}export{t as e}

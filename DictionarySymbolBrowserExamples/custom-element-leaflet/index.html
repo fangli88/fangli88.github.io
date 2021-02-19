@@ -70,8 +70,8 @@
       map.on('click', e => {
         const icon = L.icon({
           iconUrl: currentPreview.src,
-          iconSize: [currentPreview.width * 2, currentPreview.height * 2],
-          iconAnchor: [currentPreview.width, currentPreview.height],
+          iconSize: [currentPreview.width, currentPreview.height],
+          iconAnchor: [currentPreview.width/2, currentPreview.height/2],
         });
         L.marker([e.latlng.lat, e.latlng.lng], { icon: icon }).addTo(map);
       });

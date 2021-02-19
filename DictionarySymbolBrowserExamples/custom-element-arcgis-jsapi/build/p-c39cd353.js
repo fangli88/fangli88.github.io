@@ -1,0 +1,1 @@
+import{a2 as r,ap as a}from"./p-ab028778.js";function t(t){return{origin:"portal-item",url:r(t.itemUrl),portal:t.portal||a.getDefault(),portalItem:t,readResourcePaths:[]}}export{t as o}

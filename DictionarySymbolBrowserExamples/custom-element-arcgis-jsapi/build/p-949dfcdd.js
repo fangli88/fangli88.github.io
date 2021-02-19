@@ -1,1 +1,0 @@
-import"./p-476cf7c4.js";import{U as r}from"./p-dc4230e0.js";import{m as t}from"./p-49a8c628.js";class e{_decode(e){const o=t(e.buffer,e.options);return r({result:o,transferList:[o.pixelData.buffer]})}}function o(){return new e}export default o;

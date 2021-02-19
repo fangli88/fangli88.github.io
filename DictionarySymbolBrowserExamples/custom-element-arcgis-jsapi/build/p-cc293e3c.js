@@ -1,1 +1,0 @@
-import{ej as o,bK as r}from"./p-dc4230e0.js";function t(t,e){const n=e||t.extent,s=t.width,c=r(n&&n.spatialReference);return n&&s?n.width/s*c*o*96:0}export{t as e}
